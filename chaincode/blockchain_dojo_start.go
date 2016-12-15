@@ -136,8 +136,7 @@ func (t *BoletoPropostaChaincode) Invoke(stub shim.ChaincodeStubInterface, funct
 	// de acordo com a funcao chamada
 	if function == "init" {
 		return t.Init(stub, "init", args)
-	}
-	else if function = "registrarProposta" {
+	} else if function = "registrarProposta" {
 		return t.registrarProposta(stub, args)
 	}
 	fmt.Println("invoke não encontrou a func: " + function) //error
