@@ -137,6 +137,7 @@ func (t *BoletoPropostaChaincode) Invoke(stub shim.ChaincodeStubInterface, funct
 	if function == "init" {
 		return t.Init(stub, "init", args)
 	} else if function == "registrarProposta" {
+		
 		return t.registrarProposta(stub, args)
 	}
 	fmt.Println("invoke não encontrou a func: " + function) //error
@@ -154,7 +155,10 @@ func (t *BoletoPropostaChaincode) registrarProposta(stub shim.ChaincodeStubInter
 	fmt.Println("registrarProposta...")
 
 	// Verifica se a quantidade de argumentos recebidas corresponde a esperada
-
+	// Verificação da quantidade de argumentos recebidos
+	if len(args) != 5 {
+		return nil, errors.New("registrarProposta - Número arâmetros incorreto. Esperamos 5! Vieram " + len(args))
+	}
 
 
 
