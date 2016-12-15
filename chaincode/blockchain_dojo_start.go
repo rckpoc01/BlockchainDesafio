@@ -41,13 +41,13 @@ type BoletoPropostaChaincode struct {
 // Definição da Struct Proposta e parametros para exportação para JSON
 
 type Proposta struct {
-	IdProposta		string	'json:"idProposta"'
-	Cpf			string	'json:"cpf"'
+	IdProposta		string	`json:"idProposta"`
+/*	Cpf			string	'json:"cpf"'
 	BoletoGerado		string	'json:"boletoGerado"'
 	DadosAceite		string,	'json:"dadosAceite"'
 	AssinaturaPagador	string 'json:"assinaturaPagador"'
 	AssinaturaFavorecido	string	'json:"assinaturaFavorecido"'
-	BoletoPago		bool	'json:"boletoPago"'
+	BoletoPago		bool	'json:"boletoPago"'*/
 }
 
 
