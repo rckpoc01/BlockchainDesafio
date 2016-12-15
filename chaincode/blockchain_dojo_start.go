@@ -54,7 +54,7 @@ const (
 	colCpfPagador		= "cpfPagador"
 	colPagadorAceitou	= "pagadorAceitou"
 	colBeneficiarioAceitou	= "beneficiarioAceitou"
-	colBoletoPago		= "boletoPago"
+	colBoletoPago		= 	"boletoPago"
 )
 
 // ============================================================================================================================
@@ -134,12 +134,12 @@ func (t *BoletoPropostaChaincode) Invoke(stub shim.ChaincodeStubInterface, funct
 
 	// Estrutura de Seleção para escolher qual função será executada, 
 	// de acordo com a funcao chamada
-	
-
-
-
-
-
+	if function == "init" {
+		return t.Init(stub, "init", args)
+	}
+	else if function = "registrarProposta" {
+		return t.registrarProposta(stub, args)
+	}
 	fmt.Println("invoke não encontrou a func: " + function) //error
 
 	return nil, errors.New("Invocação de função desconhecida: " + function)
