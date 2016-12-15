@@ -157,7 +157,8 @@ func (t *BoletoPropostaChaincode) registrarProposta(stub shim.ChaincodeStubInter
 	// Verifica se a quantidade de argumentos recebidas corresponde a esperada
 	// Verificação da quantidade de argumentos recebidos
 	if len(args) != 5 {
-		return nil, errors.New("registrarProposta - Número arâmetros incorreto. Esperamos 5! Vieram " + strconv.Itoa(len(args)))
+		t := strconv.Itoa(len(args))
+		return nil, errors.New("registrarProposta - Número arâmetros incorreto. Esperamos 5! Vieram " + t)
 	}
 
 
