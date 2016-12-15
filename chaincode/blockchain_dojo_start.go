@@ -174,9 +174,10 @@ func (t *BoletoPropostaChaincode) registrarProposta(stub shim.ChaincodeStubInter
 		Columns: [] *shim.Column{
 			&shim.Column{Value: &shim.Column_String_{String_: id}},
 			&shim.Column{Value: &shim.Column_String_{String_: cpf}},
-			&shim.Column{Value: &shim.Column_String_{Boolean: id}},
-			&shim.Column{Value: &shim.Column_String_{Boolean: id}},
-			&shim.Column{Value: &shim.Column_String_{Boolean: id}},
+			&shim.Column{Value: &shim.Column_Bool_{Bool: pagadorAceitou}},
+			&shim.Column{Value: &shim.Column_Bool {Bool: beneficiarioAceitou}},
+			&shim.Column{Value: &shim.Column_Bool {Bool: boletoPago}}
+		},
 	})
 
 
