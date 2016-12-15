@@ -40,16 +40,32 @@ type BoletoPropostaChaincode struct {
 
 // Definição da Struct Proposta e parametros para exportação para JSON
 
-
-
-
+type Proposta struct {
+	IdProposta		string	'json:"idProposta"'
+	Cpf			string	'json:"cpf"
+	BoletoGerado		string	'json:"boletoGerado"'
+	DadosAceite		string,	'json:"dadosAceite"'
+	AssinaturaPagador	string 'json:"assinaturaPagador"'
+	AssinaturaFavorecido	string	'json:"assinaturaFavorecido"'
+	BoletoPago		bool	'json:"boletoPago"'
+}
 
 
 
 // consts associadas à tabela de Propostas
 
 
-
+/*const {
+	NomeTabela		= "BoletoProposta"
+	IdProposta		= "idProposta"'
+	Cpf			= "cpf"
+	BoletoGerado		= "boletoGerado"
+	DadosAceite		= "dadosAceite"
+	AssinaturaPagador	= "assinaturaPagador"
+	AssinaturaFavorecido	= "assinaturaFavorecido"
+	BoletoPago		= "boletoPago"
+}
+*/
 
 
 
@@ -74,7 +90,9 @@ func (t *BoletoPropostaChaincode) Init(stub shim.ChaincodeStubInterface, functio
 
 	// Verificação da quantidade de argumentos recebidos
 
-
+	if len(args) != 4 {
+		return nil, errors.New("Incorrect number of arguments. Expecting 4")
+	}
 
 
 
@@ -93,7 +111,7 @@ func (t *BoletoPropostaChaincode) Init(stub shim.ChaincodeStubInterface, functio
 	// Criar tabela de Propostas
 	fmt.Println("Criando a tabela 'Proposta'...")
 	
-
+	
 
 
 
