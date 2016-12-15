@@ -39,37 +39,23 @@ type BoletoPropostaChaincode struct {
 
 
 // Definição da Struct Proposta e parametros para exportação para JSON
-
 type Proposta struct {
-	IdProposta		string	`json:"idProposta"`
-	Cpf			string	`json:"cpf"`
-	BoletoGerado		string	`json:"boletoGerado"`
-	DadosAceite		string	`json:"dadosAceite"`
-	AssinaturaPagador	string `json:"assinaturaPagador"`
-	AssinaturaFavorecido	string	`json:"assinaturaFavorecido"`
-	BoletoPago		bool	`json:"boletoPago"`
+    ID				string	`json:"id_proposta"`
+	CpfPagador		string 	`json:"cpf_pagador"`
+	PagadorAceitou 		bool 	`json:"pagador_aceitou"`
+	BeneficiarioAceitou 	bool 	`json:"beneficiario_aceitou"`
+	BoletoPago 		bool 	`json:"boleto_pago"`
 }
 
-
-
 // consts associadas à tabela de Propostas
-
-
 const (
-	NomeTabela		= "BoletoProposta"
-	IdProposta		= "idProposta"
-	Cpf			= "cpf"
-	BoletoGerado		= "boletoGerado"
-	DadosAceite		= "dadosAceite"
-	AssinaturaPagador	= "assinaturaPagador"
-	AssinaturaFavorecido	= "assinaturaFavorecido"
-	BoletoPago		= "boletoPago"
+	idProposta		= "id"
+	nomeTabelaProposta	= "Proposta"
+	colCpfPagador		= "cpfPagador"
+	colPagadorAceitou	= "pagadorAceitou"
+	colBeneficiarioAceitou	= "beneficiarioAceitou"
+	colBoletoPago		= "boletoPago"
 )
-
-
-
-
-
 
 // ============================================================================================================================
 // Main
@@ -86,51 +72,51 @@ func main() {
 // 		Inicia/Reinicia a tabela de propostas
 // ============================================================================================================================
 func (t *BoletoPropostaChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+	//myLogger.Debug("Init Chaincode...")
 	fmt.Println("Init Chaincode...")
 
 	// Verificação da quantidade de argumentos recebidos
+	if len(args) != 0 {
+		return nil, errors.New("Incorrect number of arguments. Expecting 0")
+	}
 
-	if len(args) != 4 {
-		return nil, errors.New("Incorrect number of arguments. Expecting 4")
+	// Verifica se a tabela 'Proposta' existe
+	fmt.Println("Verificando se a tabela " + nomeTabelaProposta + " existe...")
+	tbProposta, err := stub.GetTable(nomeTabelaProposta)
+	if err != nil {
+		fmt.Println("Falha ao executar stub.GetTable para a tabela " + nomeTabelaProposta + ". [%v]", err)
+	}
+	// Se a tabela 'Proposta' já existir, excluir a tabela
+	if tbProposta != nil {	
+		err = stub.DeleteTable(nomeTabelaProposta)
+		fmt.Println("Tabela " + nomeTabelaProposta + " excluída.")
 	}
 
 
-
-	// Verifica se a tabela 'Proposta' existe
-	fmt.Println("Verificando se a tabela 'Proposta' existe...")
-	
-
-
-	// Se a tabela 'Proposta' já existir, excluir a tabela
-	
-
-
-
-
-
 	// Criar tabela de Propostas
-	fmt.Println("Criando a tabela 'Proposta'...")
-	
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-	fmt.Println("Tabela 'Proposta' criada com sucesso.")
+	fmt.Println("Criando a tabela " + nomeTabelaProposta + "...")
+	err = stub.CreateTable(nomeTabelaProposta, []*shim.ColumnDefinition{
+		// Identificador da proposta (hash)
+		&shim.ColumnDefinition{Name: idProposta, Type: shim.ColumnDefinition_STRING, Key: true},
+		// CPF do Pagador
+		&shim.ColumnDefinition{Name: colCpfPagador, Type: shim.ColumnDefinition_STRING, Key: false},
+		// Status de aceite do Pagador da proposta
+		&shim.ColumnDefinition{Name: colPagadorAceitou, Type: shim.ColumnDefinition_BOOL, Key: false},
+		// Status de aceite do Beneficiario da proposta
+		&shim.ColumnDefinition{Name: colBeneficiarioAceitou, Type: shim.ColumnDefinition_BOOL, Key: false},
+		// Status do Pagamento do Boleto
+		&shim.ColumnDefinition{Name: colBoletoPago, Type: shim.ColumnDefinition_BOOL, Key: false},
+	})
+	if err != nil {
+		return nil, fmt.Errorf("Falha ao criar a tabela " + nomeTabelaProposta + ". [%v]", err)
+	} 
+	fmt.Println("Tabela " + nomeTabelaProposta + " criada com sucesso.")
 
 	fmt.Println("Init Chaincode... Finalizado!")
 
 	return nil, nil
 }
+
 
 
 // ============================================================================================================================
