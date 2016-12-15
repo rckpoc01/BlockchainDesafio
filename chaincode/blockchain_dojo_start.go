@@ -40,7 +40,7 @@ type BoletoPropostaChaincode struct {
 
 // Definição da Struct Proposta e parametros para exportação para JSON
 type Proposta struct {
-    ID				string	`json:"id_proposta"`
+    	ID			string	`json:"id_proposta"`
 	CpfPagador		string 	`json:"cpf_pagador"`
 	PagadorAceitou 		bool 	`json:"pagador_aceitou"`
 	BeneficiarioAceitou 	bool 	`json:"beneficiario_aceitou"`
@@ -54,7 +54,7 @@ const (
 	colCpfPagador		= "cpfPagador"
 	colPagadorAceitou	= "pagadorAceitou"
 	colBeneficiarioAceitou	= "beneficiarioAceitou"
-	colBoletoPago		= 	"boletoPago"
+	colBoletoPago		= "boletoPago"
 )
 
 // ============================================================================================================================
@@ -155,30 +155,19 @@ func (t *BoletoPropostaChaincode) registrarProposta(stub shim.ChaincodeStubInter
 	fmt.Println("registrarProposta...")
 
 	// Verifica se a quantidade de argumentos recebidas corresponde a esperada
-	// Verificação da quantidade de argumentos recebidos
 	if len(args) != 5 {
 		t := strconv.Itoa(len(args))
 		return nil, errors.New("registrarProposta - Número arâmetros incorreto. Esperamos 5! Vieram " + t)
 	}
 
-
-
-
 	// Obtem os valores da array de arguments (args) e 
 	// os converte no tipo necessário para salvar na tabela 'Proposta'
-
-
-
-
-
-
-
-
-
-
-
-
-
+	id  := args[0]
+	cpf := args[1]
+	pagadorAceitou := strconv.FormatBool(args[2])
+	beneficiarioAceitou := strconv.FormatBool(args[3])
+	boletoPago := strconv.FormatBool(args[4])
+	// "proposta12345","01028917023","true","false","true"
 
 	// Registra a proposta na tabela 'Proposta'
 	
