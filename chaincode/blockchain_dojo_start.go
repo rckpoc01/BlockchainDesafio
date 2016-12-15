@@ -42,7 +42,7 @@ type BoletoPropostaChaincode struct {
 
 type Proposta struct {
 	IdProposta		string	'json:"idProposta"'
-	Cpf			string	'json:"cpf"
+	Cpf			string	'json:"cpf"'
 	BoletoGerado		string	'json:"boletoGerado"'
 	DadosAceite		string,	'json:"dadosAceite"'
 	AssinaturaPagador	string 'json:"assinaturaPagador"'
