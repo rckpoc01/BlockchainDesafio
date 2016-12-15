@@ -55,7 +55,7 @@ type Proposta struct {
 // consts associadas à tabela de Propostas
 
 
-const {
+const (
 	NomeTabela		= "BoletoProposta"
 	IdProposta		= "idProposta"
 	Cpf			= "cpf"
@@ -64,7 +64,7 @@ const {
 	AssinaturaPagador	= "assinaturaPagador"
 	AssinaturaFavorecido	= "assinaturaFavorecido"
 	BoletoPago		= "boletoPago"
-}
+)
 
 
 
