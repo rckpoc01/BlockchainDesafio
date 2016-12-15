@@ -164,9 +164,9 @@ func (t *BoletoPropostaChaincode) registrarProposta(stub shim.ChaincodeStubInter
 	// os converte no tipo necessário para salvar na tabela 'Proposta'
 	id  := args[0]
 	cpf := args[1]
-	pagadorAceitou := strconv.FormatBool(args[2])
-	beneficiarioAceitou := strconv.FormatBool(args[3])
-	boletoPago := strconv.FormatBool(args[4])
+	pagadorAceitou := strconv.ParseBool(args[2])
+//	beneficiarioAceitou := strconv.FormatBool(args[3])
+//	boletoPago := strconv.FormatBool(args[4])
 	// "proposta12345","01028917023","true","false","true"
 
 	// Registra a proposta na tabela 'Proposta'
