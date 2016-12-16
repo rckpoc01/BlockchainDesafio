@@ -23,7 +23,6 @@ package main
 
 // lista de imports
 // "encoding/json"	-> enconding para json
-// "strconv" -> conversor de strings
 import (
 	"errors"
 	"fmt"
@@ -40,21 +39,21 @@ type BoletoPropostaChaincode struct {
 
 // Definição da Struct Proposta e parametros para exportação para JSON
 type Proposta struct {
-    	ID			string	`json:"id_proposta"`
-	CpfPagador		string 	`json:"cpf_pagador"`
+    ID					string	`json:"id_proposta"`
+	CpfPagador			string 	`json:"cpf_pagador"`
 	PagadorAceitou 		bool 	`json:"pagador_aceitou"`
-	BeneficiarioAceitou 	bool 	`json:"beneficiario_aceitou"`
-	BoletoPago 		bool 	`json:"boleto_pago"`
+	BeneficiarioAceitou bool 	`json:"beneficiario_aceitou"`
+	BoletoPago 			bool 	`json:"boleto_pago"`
 }
 
 // consts associadas à tabela de Propostas
 const (
-	idProposta		= "id"
-	nomeTabelaProposta	= "Proposta"
-	colCpfPagador		= "cpfPagador"
-	colPagadorAceitou	= "pagadorAceitou"
-	colBeneficiarioAceitou	= "beneficiarioAceitou"
-	colBoletoPago		= "boletoPago"
+	idProposta				=	"id"
+	nomeTabelaProposta		=	"Proposta"
+	colCpfPagador			=	"cpfPagador"
+	colPagadorAceitou		=	"pagadorAceitou"
+	colBeneficiarioAceitou	=	"beneficiarioAceitou"
+	colBoletoPago			=	"boletoPago"
 )
 
 // ============================================================================================================================
@@ -137,10 +136,9 @@ func (t *BoletoPropostaChaincode) Invoke(stub shim.ChaincodeStubInterface, funct
 	if function == "init" {
 		return t.Init(stub, "init", args)
 	} else if function == "registrarProposta" {
-		
 		return t.registrarProposta(stub, args)
 	}
-	fmt.Println("invoke não encontrou a func: " + function) //error
+	fmt.Println("invoke não encontrou a func: " + function)
 
 	return nil, errors.New("Invocação de função desconhecida: " + function)
 }
@@ -156,56 +154,62 @@ func (t *BoletoPropostaChaincode) registrarProposta(stub shim.ChaincodeStubInter
 
 	// Verifica se a quantidade de argumentos recebidas corresponde a esperada
 	if len(args) != 5 {
-		t := strconv.Itoa(len(args))
-		return nil, errors.New("registrarProposta - Número arâmetros incorreto. Esperamos 5! Vieram " + t)
+		return nil, errors.New("Incorrect number of arguments. Expecting 5")
 	}
 
 	// Obtem os valores da array de arguments (args) e 
 	// os converte no tipo necessário para salvar na tabela 'Proposta'
-	id  := args[0]
-	cpf := args[1]
+	idProposta := args[0]
+	cpfPagador := args[1]
 	pagadorAceitou, err := strconv.ParseBool(args[2])
-	beneficiarioAceitou, err := strconv.FormatBool(args[3])
-	boletoPago, err := strconv.FormatBool(args[4])
-	// "proposta12345","01028917023","true","false","true"
+	if err != nil {
+		return nil, errors.New("Failed decodinf pagadorAceitou")
+	}
+	beneficiarioAceitou, err := strconv.ParseBool(args[3])
+	if err != nil {
+		return nil, errors.New("Failed decodinf beneficiarioAceitou")
+	}
+	boletoPago, err := strconv.ParseBool(args[4])
+	if err != nil {
+		return nil, errors.New("Failed decodinf boletoPago")
+	}
+
 
 	// Registra a proposta na tabela 'Proposta'
-	ok, err 0 = stub.InsertRow ( nomeTabelaProposta, shim.Row {
-		Columns: [] *shim.Column{
-			&shim.Column{Value: &shim.Column_String_{String_: id}},
-			&shim.Column{Value: &shim.Column_String_{String_: cpf}},
-			&shim.Column{Value: &shim.Column_Bool {Bool: pagadorAceitou}},
-			&shim.Column{Value: &shim.Column_Bool {Bool: beneficiarioAceitou}},
-			&shim.Column{Value: &shim.Column_Bool {Bool: boletoPago}}
-		}
+	fmt.Println("Criando Proposta Id [" + idProposta + "] para CPF nº ["+ cpfPagador +"]")
+	fmt.Printf("pagadorAceitou: " + strconv.FormatBool(pagadorAceitou)) 
+	fmt.Printf(" | beneficiarioAceitou: " + strconv.FormatBool(beneficiarioAceitou))
+	fmt.Printf(" | boletoPago: " + strconv.FormatBool(boletoPago) + "\n")
+
+	ok, err := stub.InsertRow(nomeTabelaProposta, shim.Row{
+		Columns: []*shim.Column{
+			&shim.Column{Value: &shim.Column_String_{String_: idProposta}},
+			&shim.Column{Value: &shim.Column_String_{String_: cpfPagador}},
+			&shim.Column{Value: &shim.Column_Bool{Bool: pagadorAceitou}},
+			&shim.Column{Value: &shim.Column_Bool{Bool: beneficiarioAceitou}},
+			&shim.Column{Value: &shim.Column_Bool{Bool: boletoPago}} },
 	})
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	// Caso a proposta já exista
-	
+	if !ok && err == nil {
 		// Trecho para atualizar uma proposta existente
 		// substitui um registro existente em uma linha com o registro associado ao idProposta recebido nos argumentos
-
+		ok, err := stub.ReplaceRow(nomeTabelaProposta, shim.Row{
+			Columns: []*shim.Column{
+				&shim.Column{Value: &shim.Column_String_{String_: idProposta}},
+			&shim.Column{Value: &shim.Column_String_{String_: cpfPagador}},
+			&shim.Column{Value: &shim.Column_Bool{Bool: pagadorAceitou}},
+			&shim.Column{Value: &shim.Column_Bool{Bool: beneficiarioAceitou}},
+			&shim.Column{Value: &shim.Column_Bool{Bool: boletoPago}} },
+		})
 		
+		if !ok && err == nil {
+			return nil, errors.New("Falha ao atualizar a Proposta nº " + idProposta)
+		}
+		fmt.Println("Proposta atualizada!")
+		return nil, nil
 
-
-
-
-		
-
+	}
 
 	fmt.Println("Proposta criada!")
 
