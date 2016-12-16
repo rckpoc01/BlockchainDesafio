@@ -1,0 +1,63 @@
+{
+  "jsonrpc": "2.0",
+  "method": "deploy",
+  "params": {
+    "type": 1,
+    "chaincodeID": {
+      "path": "https://github.com/rckpoc01/BlockchainDesafio/chaincode"
+    },
+    "ctorMsg": {
+      "function": "init",
+      "args": [
+        
+      ]
+    },
+    "secureContext": "admin"
+  },
+  "id": 0
+}
+
+
+
+2222417c73f63578b90a7e3bb5a54c3bfa3a60f371eef65b19a837489ccfd6fc451e130d8d17ac6e3758ba0ccbec6b66cfc8492f76baaf122239cfd6fab92c48
+
+
+
+{
+  "jsonrpc": "2.0",
+  "method": "invoke",
+  "params": {
+    "type": 1,
+    "chaincodeID": {
+      "name": "2222417c73f63578b90a7e3bb5a54c3bfa3a60f371eef65b19a837489ccfd6fc451e130d8d17ac6e3758ba0ccbec6b66cfc8492f76baaf122239cfd6fab92c48"
+    },
+    "ctorMsg": {
+      "function": "registrarProposta",
+      "args": [
+        "proposta12345","01028917023","true","true","true"
+      ]
+    },
+    "secureContext": "admin"
+  },
+  "id": 0
+}
+
+
+{
+  "jsonrpc": "2.0",
+  "method": "invoke",
+  "params": {
+    "type": 1,
+    "chaincodeID": {
+      "name": "2222417c73f63578b90a7e3bb5a54c3bfa3a60f371eef65b19a837489ccfd6fc451e130d8d17ac6e3758ba0ccbec6b66cfc8492f76baaf122239cfd6fab92c48"
+    },
+    "ctorMsg": {
+      "function": "consultarProposta",
+      "args": [
+        "proposta12345"
+      ]
+    },
+    "secureContext": "admin"
+  },
+  "id": 0
+}

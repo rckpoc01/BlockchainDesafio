@@ -233,8 +233,13 @@ func (t *BoletoPropostaChaincode) Query(stub shim.ChaincodeStubInterface, functi
 
 	// Estrutura de Seleção para escolher qual função será executada, 
 	// de acordo com a funcao chamada
+	
 
+	if function == "consultarProposta" {
+		return t.consultarProposta(args)
 
+	}
+	fmt.Println("Query não encontrou a func: " + function)
 
 
 
@@ -253,25 +258,34 @@ func (t *BoletoPropostaChaincode) consultarProposta(stub shim.ChaincodeStubInter
 	var propostaAsBytes []byte		// retorno do json em bytes
 	
 	// Verifica se a quantidade de argumentos recebidas corresponde a esperada
-
-
-
-
+	if len(args) != 1 {
+		return nil, errors.New("Número de argumentos incorreto. Expecting 1")
+	}
 
 	// Obtem os valores dos argumentos e os prepara para salvar na tabela 'Proposta'
-	
-
-
+	id := args[0]
 
 	// Define o valor de coluna do registro a ser buscado
-	
+	var columns []*shim.Column
+	col1 := shim.Column{Value: &shim.Column_String_{String_: id}}
+
+	columns = append(columns, &col1)
+
+	row := shim.Row{Columns: columns}
 
 
 
 	// Consultar a proposta na tabela 'Proposta'
-	
-
-
+	row, err := stub.GetRow(nomeTabelaProposta, columns)
+		if err != nil {
+			return nil, err
+		}
+		rows := make(chan Row)
+		go func() {
+			rows <- row
+			close(rows)
+		}()
+	return rows, nil
 
 
 	// Tratamento para o caso de não encontrar nenhuma proposta correspondente
